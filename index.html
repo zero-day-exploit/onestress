@@ -62,7 +62,7 @@
         </div>
     </div>
     <div id="mainPanel" class="hidden w-full max-w-md">
-        <h1 class="text-3xl font-bold text-center text-blue-400 mb-6">Stresser Dashboard</h1>
+        <h1 class="text-3xl font-bold text-center text-blue-400 mb-6">Onestress Dashboard</h1>
         <div class="flex justify-center mb-4">
             <button id="tab-layer7" class="px-4 py-2 bg-blue-600 text-white rounded-t-md font-semibold">Layer 7</button>
             <button id="tab-layer4" class="px-4 py-2 bg-gray-700 text-white rounded-t-md font-semibold">Layer 4</button>
@@ -81,7 +81,7 @@
                 <input type="number" id="timeL7" min="1" max="200" value="60" class="mt-1 w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
             <div class="mb-4">
-                <label for="concsL7" class="block text-sm font-medium text-gray-300">Połączenia równoległe (1-4)</label>
+                <label for="concsL7" class="block text-sm font-medium text-gray-300">con (1-40)</label>
                 <input type="number" id="concsL7" min="1" max="4" value="1" class="mt-1 w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required>
             </div>
             <div class="mb-4">
@@ -93,7 +93,7 @@
                     <option value="priv-flood">L7 | Private Flood</option>
                 </select>
             </div>
-            <button onclick="launchTest('L7')" class="w-full p-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold">Rozpocznij test</button>
+            <button onclick="launchTest('L7')" class="w-full p-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white font-semibold">Rozpocznij Atak</button>
         </div>
         <div id="layer4" class="hidden bg-gray-800 p-6 rounded-b-lg rounded-r-lg shadow-lg">
             <div class="mb-4">
